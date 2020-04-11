@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 
 
@@ -66,6 +67,7 @@ bool TestIntersection1() {
     TSphere s1(TPoint(0, 0), 0, 1);
     double t0, t1;
     int points = PointsOfIntersectionOfTwoSpheres(s0, s1, 1, t0, t1);
+    std::cout << std::fixed << std::setprecision(10) << points << ' ' << t0 << ' ' << t1 << std::endl;
     if (points != 2)
         return false;
     if (fabs(t0 + 2) > EPS || fabs(t1 - 2) > EPS)
@@ -78,17 +80,29 @@ bool TestIntersection2() {
     TSphere s1(TPoint(2, 0), M_PI * 3 / 4, 1);
     double t0, t1;
     int points = PointsOfIntersectionOfTwoSpheres(s0, s1, 1, t0, t1);
-    std::cout << points << ' ' << t0 << ' ' << t1 << std::endl;
+    std::cout << std::fixed << std::setprecision(10) << points << ' ' << t0 << ' ' << t1 << std::endl;
     if (points != 2)
         return false;
-    if (fabs(t0 + 2) > EPS || fabs(t1 - 2) > EPS)
+    if (fabs(t0 - 1.4142135624) > EPS || fabs(t1 - 4.2426406871) > EPS)
         return false;
     return true;
 }
 
 int main() {
-    std::cout << TestIntersection1() << std::endl;
-    std::cout << TestIntersection2() << std::endl;
+    //std::cout << TestIntersection1() << std::endl;
+    //std::cout << TestIntersection2() << std::endl;
+    //double m1 = 1.0, m2 = 1.0, x1 = 2.0, y1 = 1.5, x2 = 0.3, y2 = -y1 * m1 / m2;
+    double m1 = 1.0, m2 = 1.0, x1 = 1.0, y1 = 1.0, x2 = 1.0, y2 = -y1 * m1 / m2;
+    double e = m1 * (x1 * x1 + y1 * y1) + m2 * (x2 * x2 + y2 * y2), p = m1 * x1 + m2 * x2;
+    double a = m1 + m1 * m1 / m2;
+    double b = -2 * p * m1 / m2;
+    double c = m1 * y1 * y1 + p * p / m2 + y1 * y1 * m1 * m1 / m2 - e;
+    double d = sqrt(b * b - 4 * a * c);
+    std::cout << a << ' ' << b << ' ' << c << ' ' << d << std::endl;
+    double t1 = (-b - d) / 2 / a, t2 = (-b + d) / 2 / a;
+    std::cout << x1 << ' ' << y1 << ' ' << (p - x1 * m1) / m2 << ' ' << -y1 * m1 / m2 << std::endl;
+    std::cout << t1 << ' ' << y1 << ' ' << (p - t1 * m1) / m2 << ' ' << -y1 * m1 / m2 << std::endl;
+    std::cout << t2 << ' ' << y1 << ' ' << (p - t2 * m1) / m2 << ' ' << -y1 * m1 / m2 << std::endl;
     return 0;
 }
 
